@@ -1,14 +1,20 @@
 ## Mobilenet with custom data
 
-This project uses pytorch to implement Mobilenet with Jupyter Notebook. The main dataset consists of imagenet data and custom data. Hope this could help you to enjoy deep learning.
+[**Project Home Page**](https://github.com/luoqiaoyang/Mobilenet-CustomData)
+
+The project task is to classify the fruits on supermarkets based on deep CNN model. But the machines in supermarkets only have CPU. So my team select mobilenet as the basic NN model and train it to classify fruits.
+
+This project uses pytorch to implement Mobilenet with Jupyter Notebook. The main dataset consists of imagenet data and custom data. 
+
+Hope this could help you to enjoy deep learning.
 
 ### Version 1
 
 **Dataset**
 
-Originally, my team select Imagenet 2012 to train the mobilenet model.
+Originally, we select Tiny Imagenet to train the mobilenet model.
 
-Imagenet: http://image-net.org/download 
+Tiny Imagenet: http://cs231n.stanford.edu/tiny-imagenet-200.zip
 
 ### Reference
 
