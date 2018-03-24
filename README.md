@@ -22,7 +22,7 @@ And we can achieve 100% validation accuracy.
 
 Then, we add three other fruits and repeat the experiment.
 
-**Training Dataset  **
+**Training Dataset**
 
 We select Tiny Imagenet to train the mobilenet model.
 
@@ -42,9 +42,9 @@ apple: 21, avocado: 20, banana: 27, kiwi: 16, watermelon: 18
 
 **Result**
 
-5 Classes
+5 Classes, 30 epochs
 
-![cc_30](/home/yang/github_projects/pytorch/Mobilenet-CustomData/acc_30e.png)
+![cc_30](https://github.com/luoqiaoyang/Mobilenet-CustomData/raw/master/acc_30e.png)
 
 ### Reference
 
