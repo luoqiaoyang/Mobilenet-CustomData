@@ -55,3 +55,7 @@ apple: 21, avocado: 20, banana: 27, kiwi: 16, watermelon: 18
 2. There are lots of good pytorch tutorials in github, here recommend a Chinese version for new beginners:
 
    https://github.com/SherlockLiao/code-of-learn-deep-learning-with-pytorch
+
+3. A jupyter notebook sample for mobilenet:
+
+   https://github.com/leonardoaraujosantos/MobileNet
