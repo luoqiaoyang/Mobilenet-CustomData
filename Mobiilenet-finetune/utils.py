@@ -23,21 +23,21 @@ def train(net, train_data, valid_data, num_epochs, optimizer, criterion):
         net = net.train()
         for im, label in train_data:
             if torch.cuda.is_available():
-                im = Variable(im.cuda())  # (bs, 3, h, w)
-                label = Variable(label.cuda())  # (bs, h, w)
+                im_train = Variable(im.cuda())  # (bs, 3, h, w)
+                label_train = Variable(label.cuda())  # (bs, h, w)
             else:
-                im = Variable(im)
-                label = Variable(label)
+                im_train = Variable(im,requires_grad=True)
+                label_train = Variable(label,requires_grad=True)
             # forward
-            output = net(im)
-            loss = criterion(output, label)
+            output = net(im_train)
+            loss = criterion(output, label_train)
             # backward
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
             train_loss += loss.data[0]
-            train_acc += get_acc(output, label)
+            train_acc += get_acc(output, label_train)
 
         cur_time = datetime.now()
         h, remainder = divmod((cur_time - prev_time).seconds, 3600)
@@ -49,15 +49,15 @@ def train(net, train_data, valid_data, num_epochs, optimizer, criterion):
             net = net.eval()
             for im, label in valid_data:
                 if torch.cuda.is_available():
-                    im = Variable(im.cuda(), volatile=True)
-                    label = Variable(label.cuda(), volatile=True)
+                    im_val = Variable(im.cuda(), volatile=True)
+                    label_val = Variable(label.cuda(), volatile=True)
                 else:
-                    im = Variable(im, volatile=True)
-                    label = Variable(label, volatile=True)
-                output = net(im)
-                loss = criterion(output, label)
+                    im_val = Variable(im, volatile=True)
+                    label_val = Variable(label, volatile=True)
+                output = net(im_val)
+                loss = criterion(output, label_val)
                 valid_loss += loss.data[0]
-                valid_acc += get_acc(output, label)
+                valid_acc += get_acc(output, label_val)
             epoch_str = (
                 "Epoch %d. Train Loss: %f, Train Acc: %f, Valid Loss: %f, Valid Acc: %f, "
                 % (epoch, train_loss / len(train_data),
@@ -100,45 +100,3 @@ class residual_block(nn.Module):
             x = self.conv3(x)
         return F.relu(x + out, True)
 
-
-class resnet(nn.Module):
-    def __init__(self, in_channel, num_classes, verbose=False):
-        super(resnet, self).__init__()
-        self.verbose = verbose
-
-        self.block1 = nn.Conv2d(in_channel, 64, 7, 2)
-
-        self.block2 = nn.Sequential(
-            nn.MaxPool2d(3, 2), residual_block(64, 64), residual_block(64, 64))
-
-        self.block3 = nn.Sequential(
-            residual_block(64, 128, False), residual_block(128, 128))
-
-        self.block4 = nn.Sequential(
-            residual_block(128, 256, False), residual_block(256, 256))
-
-        self.block5 = nn.Sequential(
-            residual_block(256, 512, False),
-            residual_block(512, 512), nn.AvgPool2d(3))
-
-        self.classifier = nn.Linear(512, num_classes)
-
-    def forward(self, x):
-        x = self.block1(x)
-        if self.verbose:
-            print('block 1 output: {}'.format(x.shape))
-        x = self.block2(x)
-        if self.verbose:
-            print('block 2 output: {}'.format(x.shape))
-        x = self.block3(x)
-        if self.verbose:
-            print('block 3 output: {}'.format(x.shape))
-        x = self.block4(x)
-        if self.verbose:
-            print('block 4 output: {}'.format(x.shape))
-        x = self.block5(x)
-        if self.verbose:
-            print('block 5 output: {}'.format(x.shape))
-        x = x.view(x.shape[0], -1)
-        x = self.classifier(x)
-        return x
