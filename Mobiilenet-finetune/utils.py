@@ -26,8 +26,8 @@ def train(net, train_data, valid_data, num_epochs, optimizer, criterion):
                 im_train = Variable(im.cuda())  # (bs, 3, h, w)
                 label_train = Variable(label.cuda())  # (bs, h, w)
             else:
-                im_train = Variable(im,requires_grad=True)
-                label_train = Variable(label,requires_grad=True)
+                im_train = Variable(im)
+                label_train = Variable(label)
             # forward
             output = net(im_train)
             loss = criterion(output, label_train)
