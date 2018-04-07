@@ -46,13 +46,15 @@ apple: 21, avocado: 20, banana: 27, kiwi: 16, watermelon: 18
 
 ![cc_30](https://github.com/luoqiaoyang/Mobilenet-CustomData/raw/master/acc_30e.png)
 
-###Version 2 
+### Version 2 
 
 We expand val dataset size into 283 pictures, including
 
 Apple: 44, Avocado: 58, Banana: 57, Kiwi: 61, Watermelon: 63
 
 And we use different learning rate on different layers for the last trained model.
+
+The new accuracy is around 87.5%.
 
 ### Reference
 
