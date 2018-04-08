@@ -12,46 +12,6 @@ def get_acc(output, label):
     num_correct = (pred_label == label).sum().data[0]
     return num_correct / total
 
-
-def train(net, train_data, epoch, optimizer, criterion):
-    if torch.cuda.is_available():
-        net = net.cuda()
-    prev_time = datetime.now()
-    
-    train_loss = 0
-    train_acc = 0
-    net = net.train()
-    for im, label in train_data:
-        if torch.cuda.is_available():
-            im_train = Variable(im.cuda())  # (bs, 3, h, w)
-            label_train = Variable(label.cuda())  # (bs, h, w)
-        else:
-            im_train = Variable(im)
-            label_train = Variable(label)
-        # forward
-        output = net(im_train)
-        loss = criterion(output, label_train)
-        # backward
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        train_loss += loss.data[0]
-        train_acc += get_acc(output, label_train)
-
-    cur_time = datetime.now()
-    h, remainder = divmod((cur_time - prev_time).seconds, 3600)
-    m, s = divmod(remainder, 60)
-    time_str = "Time %02d:%02d:%02d" % (h, m, s)
-     
-    epoch_str = ("Epoch %d. Train Loss: %f, Train Acc: %f, " %
-    (epoch, train_loss / len(train_data),
-    train_acc / len(train_data)))
-    
-    prev_time = cur_time
-    print(epoch_str + time_str)
-
-
 def train(net, train_data, epoch, optimizer, criterion):
     if torch.cuda.is_available():
         net = net.cuda()
